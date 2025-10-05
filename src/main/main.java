@@ -2,10 +2,11 @@ package main;
 
 import config.config;
 import java.util.Scanner;
+import java.sql.*;
 
 public class main {
 
-   //Useless func
+    // 🧹 Clears the screen
     public static void clearScreen() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
@@ -15,34 +16,56 @@ public class main {
                 System.out.flush();
             }
         } catch (Exception e) {
-            // fallback
             for (int i = 0; i < 50; i++) System.out.println();
         }
     }
 
-    public static void deleteEmployee() {
-        config db = new config();
-        db.connectDB();
+    // 🔐 LOGIN SYSTEM
+    public static String login() {
         Scanner sc = new Scanner(System.in);
+        config db = new config();
+        Connection conn = db.connectDB();
 
-        viewData();
+        String role = null;
 
-        System.out.print("\nEnter Employee ID to delete: ");
-        int empId = sc.nextInt();
-        sc.nextLine(); // clear newline
+        while (role == null) {
+            clearScreen();
+            System.out.println("=====================================");
+            System.out.println("        🔑 Employee Login");
+            System.out.println("=====================================");
+            System.out.print("Username: ");
+            String username = sc.nextLine();
+            System.out.print("Password: ");
+            String password = sc.nextLine();
 
-        System.out.print("Are you sure you want to delete this employee? (Y/N): ");
-        String confirm = sc.nextLine();
+            try {
+                String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, username);
+                pstmt.setString(2, password);
+                ResultSet rs = pstmt.executeQuery();
 
-        if (confirm.equalsIgnoreCase("Y")) {
-            String sqlDelete = "DELETE FROM employees WHERE id_num = ?";
-            db.updateRecord(sqlDelete, empId);
-            System.out.println("\n✅ Employee with ID " + empId + " has been deleted.\n");
-        } else {
-            System.out.println("\n❌ Delete canceled.\n");
+                if (rs.next()) {
+                    role = rs.getString("role");
+                    System.out.println("\n✅ Login successful! Welcome, " + username + " (" + role + ")");
+                } else {
+                    System.out.println("\n❌ Invalid username or password.");
+                    System.out.print("Try again? (Y/N): ");
+                    String again = sc.nextLine();
+                    if (!again.equalsIgnoreCase("Y")) {
+                        System.out.println("\n👋 Goodbye!");
+                        System.exit(0);
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Login error: " + e.getMessage());
+            }
         }
+
+        return role;
     }
 
+    // 🔍 View Employees
     public static void viewData() {
         config db = new config();
         db.connectDB();
@@ -50,13 +73,13 @@ public class main {
         db.viewRecords(sqlView);
     }
 
+    // ✏️ Update Employee
     public static void changeUpdate() {
         Scanner sc = new Scanner(System.in);
         config db = new config();
         db.connectDB();
 
         viewData();
-
         System.out.print("\nEnter Employee ID: ");
         int empId = sc.nextInt();
         sc.nextLine();
@@ -91,7 +114,7 @@ public class main {
                 db.updateRecord(sqlUpdate, newValue, empId);
                 break;
             case 3:
-                System.out.print("Enter new Date of Birth (YYYY-MM-DD): ");
+                System.out.print("Enter new Date of Birth: ");
                 newValue = sc.nextLine();
                 sqlUpdate = "UPDATE employees SET date_of_birth = ? WHERE id_num = ?";
                 db.updateRecord(sqlUpdate, newValue, empId);
@@ -115,7 +138,7 @@ public class main {
                 db.updateRecord(sqlUpdate, newValue, empId);
                 break;
             case 7:
-                System.out.print("Enter new Hire Date (YYYY-MM-DD): ");
+                System.out.print("Enter new Hire Date: ");
                 newValue = sc.nextLine();
                 sqlUpdate = "UPDATE employees SET hire_date = ? WHERE id_num = ?";
                 db.updateRecord(sqlUpdate, newValue, empId);
@@ -134,74 +157,115 @@ public class main {
         viewData();
     }
 
-    // Main Program Loop
+    // ❌ Delete Employee
+    public static void deleteEmployee() {
+        config db = new config();
+        db.connectDB();
+        Scanner sc = new Scanner(System.in);
+        viewData();
+
+        System.out.print("\nEnter Employee ID to delete: ");
+        int empId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Are you sure you want to delete this employee? (Y/N): ");
+        String confirm = sc.nextLine();
+
+        if (confirm.equalsIgnoreCase("Y")) {
+            String sqlDelete = "DELETE FROM employees WHERE id_num = ?";
+            db.updateRecord(sqlDelete, empId);
+            System.out.println("\n✅ Employee with ID " + empId + " deleted.");
+        } else {
+            System.out.println("\n❌ Delete canceled.");
+        }
+    }
+
+    // 🏁 MAIN
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         config db = new config();
         db.connectDB();
+
+        String role = login(); // ask login first
 
         while (true) {
             clearScreen();
             System.out.println("=====================================");
             System.out.println("   📋 Employee Management System");
             System.out.println("=====================================");
-            System.out.println("1. ➕ Register Employee");
-            System.out.println("2. 📑 View Employees");
-            System.out.println("3. ✏️  Update Employee");
-            System.out.println("4. ❌ Delete Employee");
-            System.out.println("5. 🚪 Exit");
+
+            if (role.equals("admin")) {
+                System.out.println("1. ➕ Register Employee");
+                System.out.println("2. 📑 View Employees");
+                System.out.println("3. ✏️ Update Employee");
+                System.out.println("4. ❌ Delete Employee");
+                System.out.println("5. 🚪 Logout");
+            } else {
+                System.out.println("1. 📑 View Employees");
+                System.out.println("2. 🚪 Logout");
+            }
+
             System.out.println("=====================================");
             System.out.print("Enter option: ");
             int option = sc.nextInt();
             clearScreen();
 
-            switch (option) {
-                case 1:
-                    System.out.print("Enter first name: ");
-                    String fname = sc.next();
-                    System.out.print("Enter last name: ");
-                    String lname = sc.next();
-                    System.out.print("Enter date of birth: ");
-                    String dob = sc.next();
-                    System.out.print("Enter gender: ");
-                    String gender = sc.next();
-                    System.out.print("Enter position: ");
-                    String position = sc.next();
-                    System.out.print("Enter department ID: ");
-                    int depId = sc.nextInt();
-                    System.out.print("Enter hire date: ");
-                    String hiredate = sc.next();
-                    System.out.print("Enter salary: ");
-                    int salary = sc.nextInt();
+            if (role.equals("admin")) {
+                switch (option) {
+                    case 1:
+                        System.out.print("Enter first name: ");
+                        String fname = sc.next();
+                        System.out.print("Enter last name: ");
+                        String lname = sc.next();
+                        System.out.print("Enter date of birth: ");
+                        String dob = sc.next();
+                        System.out.print("Enter gender: ");
+                        String gender = sc.next();
+                        System.out.print("Enter position: ");
+                        String position = sc.next();
+                        System.out.print("Enter department ID: ");
+                        int depId = sc.nextInt();
+                        System.out.print("Enter hire date: ");
+                        String hiredate = sc.next();
+                        System.out.print("Enter salary: ");
+                        int salary = sc.nextInt();
 
-                    String sql = "INSERT INTO employees(first_name, last_name, date_of_birth, gender, position, department_id, hire_date, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                    db.addRecord(sql, fname, lname, dob, gender, position, depId, hiredate, salary);
-                    System.out.println("\n✅ Record added successfully!\n");
-                    break;
+                        String sql = "INSERT INTO employees(first_name, last_name, date_of_birth, gender, position, department_id, hire_date, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        db.addRecord(sql, fname, lname, dob, gender, position, depId, hiredate, salary);
+                        System.out.println("\n✅ Record added successfully!\n");
+                        break;
 
-                case 2:
-                    viewData();
-                    break;
-
-                case 3:
-                    changeUpdate();
-                    break;
-
-                case 4:
-                    deleteEmployee();
-                    break;
-
-                case 5:
-                    System.out.println("\n👋 Goodbye!\n");
-                    return;
-
-                default:
-                    System.out.println("\n❌ Invalid option!");
+                    case 2:
+                        viewData();
+                        break;
+                    case 3:
+                        changeUpdate();
+                        break;
+                    case 4:
+                        deleteEmployee();
+                        break;
+                    case 5:
+                        System.out.println("\n👋 Logged out!");
+                        return;
+                    default:
+                        System.out.println("❌ Invalid option!");
+                }
+            } else {
+                switch (option) {
+                    case 1:
+                        viewData();
+                        break;
+                    case 2:
+                        System.out.println("\n👋 Logged out!");
+                        return;
+                    default:
+                        System.out.println("❌ Invalid option!");
+                }
             }
 
             System.out.println("\nPress Enter to continue...");
-            sc.nextLine(); // catch leftover newline
-            sc.nextLine(); // wait for Enter
+            sc.nextLine();
+            sc.nextLine();
         }
     }
 }
