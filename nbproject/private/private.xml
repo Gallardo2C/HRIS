@@ -3,12 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/functions/login.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/debug/debug.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/trashes/pendings.java</file>
             <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/Main/Main.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/trashes/login.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/trashes/admin.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/trashes/employees.java</file>
             <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/config/config.java</file>
-            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/functions/pendings.java</file>
-            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/functions/functions.java</file>
-            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/functions/users.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/trashes/trashpunk.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/trashes/functions.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/Admin/adminCrud.java</file>
+            <file>file:/C:/Users/Jade/Documents/NetBeansProjects/HRIS%20(Human%20Resources%20Information%20System)/src/trashes/loop.java</file>
         </group>
     </open-files>
 </project-private>

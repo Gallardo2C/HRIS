@@ -1,5 +1,5 @@
 
-package functions;
+package trashes;
 import config.config;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import trashes.admin;
 
 public class login {
     
@@ -40,10 +41,18 @@ public class login {
 
                     // Handle roles *inside* this function
                     if ("admin".equalsIgnoreCase(role)) {
+                        
+                        
                         System.out.println("Opening Admin Menu...");
+                        
+                        admin.adminDashboard(conf);
                         // call your admin functions here
+                        
                     } else if ("employee".equalsIgnoreCase(role)) {
+                        
+                        
                         System.out.println("Opening Employee Menu...");
+                        employees.employeeMenu(conf);
                         // call your employee functions here
                     }
 
@@ -60,7 +69,54 @@ public class login {
         return role;
         }
     
-    
+    public static String login2(config conf) {
+    Scanner sc = new Scanner(System.in);
+    String role = null;
+    String username = null;
+
+    do {
+        System.out.print("Enter Username: ");
+        username = sc.nextLine();
+
+        System.out.print("Enter Password: ");
+        String password = sc.nextLine();
+
+        String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
+
+        try (Connection con = config.connectDB();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            ps.setString(2, hashPassword(password));
+            ResultSet rs = ps.executeQuery();
+
+            System.out.println("Debug hash: " + hashPassword(password));
+
+            if (rs.next()) {
+                role = rs.getString("role");
+                System.out.println("\n✅ Login successful! Welcome, " + username + " (" + role + ")\n");
+            } else {
+                System.out.println("\n❌ Invalid username or password. Try again.\n");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("❌ Database error: " + e.getMessage());
+        }
+
+    } while (role == null);
+
+    // ✅ Connection is closed at this point
+    if ("admin".equalsIgnoreCase(role)) {
+        System.out.println("Opening Admin Menu...");
+        admin.adminDashboard(conf);
+    } else if ("employee".equalsIgnoreCase(role)) {
+        System.out.println("Opening Employee Menu...");
+        employees.employeeMenu(conf);
+    }
+
+    return role;
+}
+
  
        public static String hashPassword(String password) {
         try {
