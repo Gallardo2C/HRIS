@@ -7,6 +7,8 @@
 package Admin;
 
 import config.config;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -152,6 +154,8 @@ public static void viewEmployeesWithDepartment(config conf) {
  public static void updateEmployee2(config conf) {
     Scanner sc = new Scanner(System.in);
 
+    
+    viewEmployeesWithDepartment(conf);
     System.out.print("Enter Employee ID to update: ");
     int id = sc.nextInt();
     sc.nextLine(); // consume newline
@@ -317,6 +321,59 @@ public static void deleteAdmin(config conf) {
   
  
     
+public static void registerUser(config conf) {
+    Scanner sc = new Scanner(System.in);
+
+    System.out.print("Enter Username: ");
+    String username = sc.nextLine();
+
+    System.out.print("Enter Password: ");
+    String password = sc.nextLine();
+
+    System.out.print("Enter Role (admin/employee): ");
+    String role = sc.nextLine().toLowerCase();
+
+    // Validate role
+    if (!role.equals("admin") && !role.equals("employee")) {
+        System.out.println("⚠️ Invalid role. Must be 'admin' or 'employee'.");
+        return;
+    }
+
+    // Hash password
+    String hashedPassword = hashPassword(password);
+
+    String sql = "INSERT INTO users(username, password, role) VALUES (?, ?, ?)";
+    try (Connection con = config.connectDB();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, username);
+        ps.setString(2, hashedPassword);
+        ps.setString(3, role);
+
+        ps.executeUpdate();
+        System.out.println("✅ User registered successfully!");
+
+    } catch (SQLException e) {
+        System.out.println("❌ Error registering user: " + e.getMessage());
+    }
+}
+
+// Helper method for hashing
+public static String hashPassword(String password) {
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hashedBytes = md.digest(password.getBytes());
+
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashedBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+
+    } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException("Error hashing password: " + e.getMessage());
+    }
+}
     
     
     

@@ -15,8 +15,7 @@ import trashes.employees;
 /*
 
 
-KULANG ANG GURO AND DEPARTMENT IDK,  SOME LOOP, 
-Taronga ang approval og butangi 
+ SOME LOOP, 
 Semi-permanent log in until log out, loop
 users registration,
 OTEN B===D
@@ -33,8 +32,14 @@ public class Main {
     Scanner sc = new Scanner(System.in);
     
     
-    
- 
+        System.out.println("oten");
+        
+        
+        //adminCrud.registerUser(conf);
+      // debug.debugadminDashboard(conf);
+          login.login2(conf);
+       
+        
     //adminCrud.createAdmin(conf);
     
     //debug.debugcreateAdmin(conf);

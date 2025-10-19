@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import trashes.admin;
+import debug.debug;
 
 public class login {
     
@@ -108,7 +109,11 @@ public class login {
     // ✅ Connection is closed at this point
     if ("admin".equalsIgnoreCase(role)) {
         System.out.println("Opening Admin Menu...");
-        admin.adminDashboard(conf);
+        
+        debug.debugadminDashboard(conf);
+       // admin.adminDashboard(conf);
+        
+        
     } else if ("employee".equalsIgnoreCase(role)) {
         System.out.println("Opening Employee Menu...");
         employees.employeeMenu(conf);

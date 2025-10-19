@@ -38,7 +38,8 @@ public class admin {
         System.out.println("4. Delete");
         System.out.println("5. Pendings");
         System.out.println("6. View All Request");
-        System.out.println("7. Out");
+        System.out.println("7. Register User");
+        System.out.println("8. Log Out");
         System.out.print("Option:");
         
         int option = sc.nextInt();
@@ -84,6 +85,10 @@ public class admin {
                     break;
                 
             case 7:
+                
+                adminCrud.registerUser(conf);
+                   break;
+            case 8:
                 
                 System.out.println("\n👋 Logged out!");
                 

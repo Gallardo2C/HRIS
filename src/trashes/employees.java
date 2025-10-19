@@ -64,9 +64,56 @@ public class employees {
             default:
                 System.out.println("⚠️ Invalid option.");
         }
-    } while (option != 4);
+    } while (option != 5);
     }
-    
+  public static void debugemployeeMenu(config conf) {
+    Scanner sc = new Scanner(System.in);
+    int option;
+
+    do {
+        System.out.println("\n--- EMPLOYEE MENU ---");
+        System.out.println("1. View");
+        System.out.println("2. Request Create (Register Employee)");
+        System.out.println("3. Request Update");
+        System.out.println("4. Request Delete");
+        System.out.println("5. Log Out");
+        System.out.print("Option: ");
+        option = sc.nextInt();
+        sc.nextLine(); // consume newline
+
+        switch (option) {
+            case 1:
+                adminCrud.viewEmployeesWithDepartment(conf);
+                break;
+
+            case 2:
+                pendings.createRequest(conf, null); // replace null with actual input data
+                break;
+
+            case 3:
+                System.out.print("Enter Employee ID to update: ");
+                int updateId = sc.nextInt();
+                sc.nextLine();
+                pendings.updateRequest(conf, null);
+                break;
+
+            case 4:
+                System.out.print("Enter Employee ID to delete: ");
+                int deleteId = sc.nextInt();
+                sc.nextLine();
+                pendings.requestDelete(conf, null);
+                break;
+
+            case 5:
+                System.out.println("👋 Logged out.");
+                break;
+
+            default:
+                System.out.println("⚠️ Invalid option.");
+        }
+    } while (option != 5);
+}
+  
     
     
     
