@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -89,16 +90,17 @@ public static void testAddRecordAndReturnId(config conf) {
     int newId = conf.addRecordAndReturnId(sql, "Svetlana");
 
     if (newId != -1) {
-        System.out.println("✨ Insert successful! New record ID: " + newId);
+        System.out.println(" Insert successful! New record ID: " + newId);
     } else {
-        System.out.println("❌ Insert failed or no ID returned.");
+        System.out.println(" Insert failed or no ID returned.");
     }
 }
     
 public static void debugadminDashboard(config conf) {
-    Scanner sc = new Scanner(System.in);
+      Scanner sc = new Scanner(System.in);
+    int option = -1;
 
-    while (true) { // loop until logout
+    do {
         System.out.println("\n--- Admin Dashboard ---");
         System.out.println("Select Option");
         System.out.println("1. Create (Register)");
@@ -109,10 +111,19 @@ public static void debugadminDashboard(config conf) {
         System.out.println("6. View All Request");
         System.out.println("7. Register User");
         System.out.println("8. Log Out");
-        System.out.print("Option: ");
 
-        int option = sc.nextInt();
-        sc.nextLine(); // consume newline
+        // 🔒 Safe input loop
+        while (true) {
+            System.out.print("Option: ");
+            try {
+                option = sc.nextInt();
+                sc.nextLine(); // clear newline
+                break; // valid input, break loop
+            } catch (InputMismatchException e) {
+                System.out.println(" Invalid input. Please enter a number from 1 to 8.");
+                sc.nextLine(); // clear invalid input
+            }
+        }
 
         switch (option) {
             case 1:
@@ -143,16 +154,16 @@ public static void debugadminDashboard(config conf) {
             case 7:
                 adminCrud.registerUser(conf);
                 break;
-                
-            case 8:    
-                
+
+            case 8:
                 System.out.println("\n👋 Logged out!");
-                return; // exit loop and method
+                return;
 
             default:
-                System.out.println("⚠️ Invalid option. Try again.");
+                System.out.println("⚠️ Invalid option.");
         }
-    }
+
+    } while (option != 8);
 }
 
 public static void debugemployeeMenu(config conf) {

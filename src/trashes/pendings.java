@@ -64,10 +64,10 @@ public class pendings {
                        employeeUsername,
                        "PENDING"); // default status
 
-        System.out.println("✅ Request submitted successfully! Waiting for admin approval.");
+        System.out.println(" Request submitted successfully! Waiting for admin approval.");
 
     } catch (Exception e) {
-        System.out.println("❌ Failed to submit request: " + e.getMessage());
+        System.out.println(" Failed to submit request: " + e.getMessage());
     }
 }
     
@@ -87,7 +87,7 @@ public class pendings {
     String confirm = sc.nextLine();
 
     if (!confirm.equalsIgnoreCase("yes")) {
-        System.out.println("❌ Deletion request cancelled.");
+        System.out.println(" Deletion request cancelled.");
         return;
     }
 
@@ -100,10 +100,10 @@ public class pendings {
                        employeeUsername,
                        "PENDING");  // status
 
-        System.out.println("🗑️ Delete request submitted successfully! Waiting for admin approval.");
+        System.out.println(" Delete request submitted successfully! Waiting for admin approval.");
 
     } catch (Exception e) {
-        System.out.println("❌ Failed to submit delete request: " + e.getMessage());
+        System.out.println(" Failed to submit delete request: " + e.getMessage());
     }
 }
     
@@ -165,10 +165,10 @@ public static void updateRequest(config conf, String employeeUsername) {
                        employeeUsername,
                        "PENDING");
 
-        System.out.println("✅ Update request submitted successfully! Waiting for admin approval.");
+        System.out.println(" Update request submitted successfully! Waiting for admin approval.");
 
     } catch (Exception e) {
-        System.out.println("❌ Failed to submit update request: " + e.getMessage());
+        System.out.println(" Failed to submit update request: " + e.getMessage());
     }
 }   
     

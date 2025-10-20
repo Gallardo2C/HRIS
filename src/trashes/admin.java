@@ -197,7 +197,7 @@ public class admin {
                 empStmt.setInt(8, rs.getInt("salary"));
                 empStmt.executeUpdate();
             }
-            System.out.println("✅ CREATE request approved and employee added!");
+            System.out.println(" CREATE request approved and employee added!");
         } 
         
         else if ("DELETE".equalsIgnoreCase(action)) {
@@ -222,7 +222,7 @@ public class admin {
         updateReqStmt.executeUpdate();
     }
 
-    System.out.println("✅ DELETE request approved and executed!");
+    System.out.println(" DELETE request approved and executed!");
 }
 
         else if ("UPDATE".equalsIgnoreCase(action)) {
@@ -281,10 +281,10 @@ public class admin {
                 updateStmt.executeUpdate();
             }
 
-            System.out.println("✅ UPDATE request approved and employee information updated!");
+            System.out.println(" UPDATE request approved and employee information updated!");
         } 
         else {
-            System.out.println("⚠️ Unsupported action type: " + action);
+            System.out.println(" Unsupported action type: " + action);
         }
 
         // Step 4: Mark request as approved
@@ -295,7 +295,7 @@ public class admin {
         }
 
     } catch (SQLException e) {
-        System.out.println("❌ Error approving request: " + e.getMessage());
+        System.out.println(" Error approving request: " + e.getMessage());
     }
 }
 
@@ -303,7 +303,7 @@ public class admin {
 public static void rejectRequest(config conf) {
     try (Connection conn = conf.connectDB()) {
         if (conn == null) {
-            System.out.println("❌ Database connection failed.");
+            System.out.println(" Database connection failed.");
             return;
         }
 
@@ -350,9 +350,9 @@ public static void rejectRequest(config conf) {
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("❌ Request has been rejected successfully!");
+                System.out.println(" Request has been rejected successfully!");
             } else {
-                System.out.println("⚠️ No matching request found for that ID.");
+                System.out.println(" No matching request found for that ID.");
             }
         }
 

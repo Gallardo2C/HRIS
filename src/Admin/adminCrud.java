@@ -63,8 +63,8 @@ public class adminCrud {
     int newEmployeeId = conf.addRecordAndReturnId(sql, firstName, lastName, dob, gender, position, deptId, hireDate, salary);
 
     if (newEmployeeId != -1) {
-        System.out.println("✅ Employee registered successfully!");
-        System.out.println("🆔 New Employee ID: " + newEmployeeId);
+        System.out.println(" Employee registered successfully!");
+        System.out.println(" New Employee ID: " + newEmployeeId);
 
         // Retrieve and display full employee info
         try (Connection conn = config.connectDB();
@@ -95,11 +95,11 @@ public class adminCrud {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error retrieving employee info: " + e.getMessage());
+            System.out.println(" Error retrieving employee info: " + e.getMessage());
         }
 
     } else {
-        System.out.println("❌ Failed to register Employee.");
+        System.out.println(" Failed to register Employee.");
     }
 }
    
@@ -147,7 +147,7 @@ public static void viewEmployeesWithDepartment(config conf) {
         System.out.println("---------------------------------------------------------------------------------------------------------------------------");
 
     } catch (SQLException e) {
-        System.out.println("❌ Error viewing employees: " + e.getMessage());
+        System.out.println(" Error viewing employees: " + e.getMessage());
     }
 }
    
@@ -281,7 +281,7 @@ public static void deleteAdmin(config conf) {
     String confirm = sc.nextLine();
 
     if (!confirm.equalsIgnoreCase("Y")) {
-        System.out.println("❌ Delete canceled.");
+        System.out.println(" Delete canceled.");
         return;
     }
 
@@ -295,7 +295,7 @@ public static void deleteAdmin(config conf) {
     List<Map<String, Object>> result = conf.fetchRecords(checkSql, empId);
 
     if (result.isEmpty()) {
-        System.out.println("❌ No Employee found with that ID.");
+        System.out.println(" No Employee found with that ID.");
         return;
     }
 
@@ -351,10 +351,10 @@ public static void registerUser(config conf) {
         ps.setString(3, role);
 
         ps.executeUpdate();
-        System.out.println("✅ User registered successfully!");
+        System.out.println(" User registered successfully!");
 
     } catch (SQLException e) {
-        System.out.println("❌ Error registering user: " + e.getMessage());
+        System.out.println(" Error registering user: " + e.getMessage());
     }
 }
 

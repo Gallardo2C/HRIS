@@ -13,67 +13,14 @@ import debug.debug;
 
 public class login {
     
-    public static String login(config conf) {
-        
-        
-         Scanner sc = new Scanner(System.in);
-        String role = null;
-
-        do {
-            System.out.print("Enter Username: ");
-            String username = sc.nextLine();
-
-            System.out.print("Enter Password: ");
-            String password = sc.nextLine();
-
-            String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
-
-            try (Connection con = config.connectDB();
-                 PreparedStatement ps = con.prepareStatement(sql)) {
-
-                ps.setString(1, username);
-                ps.setString(2, hashPassword(password));
-               // ps.setString(2, password);
-                ResultSet rs = ps.executeQuery();
-                System.out.println("Debug hash: " + hashPassword(password));
-                if (rs.next()) {
-                    role = rs.getString("role");
-                    System.out.println("\n✅ Login successful! Welcome, " + username + " (" + role + ")\n");
-
-                    // Handle roles *inside* this function
-                    if ("admin".equalsIgnoreCase(role)) {
-                        
-                        
-                        System.out.println("Opening Admin Menu...");
-                        
-                        admin.adminDashboard(conf);
-                        // call your admin functions here
-                        
-                    } else if ("employee".equalsIgnoreCase(role)) {
-                        
-                        
-                        System.out.println("Opening Employee Menu...");
-                        employees.employeeMenu(conf);
-                        // call your employee functions here
-                    }
-
-                } else {
-                    System.out.println("\n❌ Invalid username or password. Try again.\n");
-                }
-
-            } catch (SQLException e) {
-                System.out.println("❌ Database error: " + e.getMessage());
-            }
-
-        } while (role == null); // keep looping until valid login
-
-        return role;
-        }
     
-    public static String login2(config conf) {
+    
+    public static String login(config conf) throws InterruptedException {
     Scanner sc = new Scanner(System.in);
     String role = null;
     String username = null;
+    
+        System.out.println("--------Log In----------");
 
     do {
         System.out.print("Enter Username: ");
@@ -82,6 +29,10 @@ public class login {
         System.out.print("Enter Password: ");
         String password = sc.nextLine();
 
+        
+        System.out.println("-----------------------");
+        
+        
         String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
 
         try (Connection con = config.connectDB();
@@ -91,31 +42,39 @@ public class login {
             ps.setString(2, hashPassword(password));
             ResultSet rs = ps.executeQuery();
 
-            System.out.println("Debug hash: " + hashPassword(password));
+            //System.out.println("Debug hash: " + hashPassword(password));
 
             if (rs.next()) {
                 role = rs.getString("role");
-                System.out.println("\n✅ Login successful! Welcome, " + username + " (" + role + ")\n");
+                System.out.println("\n Login successful! Welcome, " + username + " (" + role + ")\n");
+                functions.sleepOne();
             } else {
-                System.out.println("\n❌ Invalid username or password. Try again.\n");
+                System.out.println("\n Invalid username or password. Try again.\n");
+               functions.sleepOne();
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Database error: " + e.getMessage());
+            System.out.println(" Database error: " + e.getMessage());
         }
 
     } while (role == null);
 
-    // ✅ Connection is closed at this point
+   
     if ("admin".equalsIgnoreCase(role)) {
+       
         System.out.println("Opening Admin Menu...");
-        
+         functions.sleepOnePointFive();
+        functions.clearScreen();
         debug.debugadminDashboard(conf);
-       // admin.adminDashboard(conf);
+       //admin.adminDashboard(conf);
         
         
     } else if ("employee".equalsIgnoreCase(role)) {
+        
+        
         System.out.println("Opening Employee Menu...");
+          functions.sleepOnePointFive();
+         functions.clearScreen();
         employees.employeeMenu(conf);
     }
 

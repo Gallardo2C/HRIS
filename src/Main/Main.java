@@ -27,17 +27,17 @@ public class Main {
     
     
     
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException{
     config conf = new config();
     Scanner sc = new Scanner(System.in);
     
     
-        System.out.println("oten");
+        //System.out.println("oten");
         
         
         //adminCrud.registerUser(conf);
       // debug.debugadminDashboard(conf);
-          login.login2(conf);
+          login.login(conf);
        
         
     //adminCrud.createAdmin(conf);

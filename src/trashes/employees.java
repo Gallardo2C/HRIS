@@ -59,10 +59,10 @@ public class employees {
                 //Delete Request
                 break;
             case 5:
-                System.out.println("👋 Logged out.");
+                System.out.println(" Logged out.");
                 break;
             default:
-                System.out.println("⚠️ Invalid option.");
+                System.out.println(" Invalid option.");
         }
     } while (option != 5);
     }
